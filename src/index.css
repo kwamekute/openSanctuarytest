@@ -17,12 +17,16 @@
     h1 {
         @apply text-3xl font-bold;
     }
+
+    button {
+        @apply px-3 py-1 rounded-full bg-transparent hover:bg-gray-100 transition-colors duration-75 cursor-pointer;
+    }
 }
 
 @layer components {
 
     .button {
-        @apply border-1 border-black h-10 w-24 rounded-md;
+        @apply hover:bg-gray-200 transition-colors;
     }
 
     .form-grid {
