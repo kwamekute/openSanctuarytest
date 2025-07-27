@@ -1,13 +1,16 @@
+import Footer from './components/footer'
+import Header from './components/header'
 
 function App() {
   return (
     <>
-      <div className="text-3xl font-bold text-blue-600 p-4">
-        OpenSanctuary is working!
+      <div className="min-h-screen flex flex-col">
+        <div className="flex-grow">
+          <Header />
+        </div>
+        <Footer />
       </div>
-      <div className="border-red w-20 h-20">
 
-      </div>
     </>
   )
 }
