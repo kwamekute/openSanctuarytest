@@ -25,21 +25,22 @@ export default function Header() {
                 </div>
                 <div className='w-[70%] h-16 border border-gray-300 rounded-full mb-6 shadow-lg pl-8 pr-2 flex items-center justify-between'>
                     <div className='flex flex-col'>
-                        <label className="border-red text-[12px] font-medium leading-4 text-[#222222]">Where</label>
+                        <label className=" text-[12px] font-medium leading-4 text-[#222222]">Where</label>
                         <input type="text" className="text-[14px] font-normal leading-[18px] text-[#222222]  focus:outline-none focus:ring-0 focus:border-none" placeholder='Search Church locations' />
                     </div>
-                    <div className='flex flex-col'>
-                        <label className="border-red text-[12px] font-medium leading-4 text-[#222222]">Date & Time in</label>
+                    <div className='border-l-2 border-grey-300 pl-4 flex flex-col '>
+                        <label className=" text-[12px] font-medium leading-4 text-[#222222]">Date & Time in</label>
                         <input type="datetime-local" className="text-[14px] font-normal leading-[18px] text-[#222222]  focus:outline-none focus:ring-0 focus:border-none" placeholder='Select Date & time' />
                     </div>
-                    <div className='flex flex-col'>
-                        <label className="border-red text-[12px] font-medium leading-4 text-[#222222]">Date & Time out</label>
+                    <div className='border-l-2 border-grey-300 pl-4 flex flex-col'>
+                        <label className=" text-[12px] font-medium leading-4 text-[#222222]">Date & Time out</label>
                         <input type="datetime-local" className="text-[14px] font-normal leading-[18px] text-[#222222]  focus:outline-none focus:ring-0 focus:border-none" placeholder='Search Date & time' />
                     </div>
-                    <div className='flex flex-col'>
-                        <label className="border-red text-[12px] font-medium leading-4 text-[#222222]">Capacity</label>
+                    <div className='border-l-2 border-grey-300 pl-4 flex flex-col'>
+                        <label className=" text-[12px] font-medium leading-4 text-[#222222]">Capacity</label>
                         <select
-                            className="w-full text-[14px] font-normal leading-[18px] text-[#222222] bg-white px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-none"
+                            className="appearance-none  text-[14px]
+                            focus:outline-none focus:ring-0 focus:border-none"
                             defaultValue=""
                         >
                             <option value="" disabled>Select a range</option>
