@@ -1,3 +1,4 @@
+import { Routes, Route } from 'react-router-dom'
 import Footer from './components/footer'
 import Header from './components/header'
 import HomeListings from './components/homepagelistings'
@@ -9,7 +10,11 @@ function App() {
       <div className="min-h-screen flex flex-col">
         <div className="flex-grow">
           <Header />
-          <HomeListings />
+          <Routes>
+            <Route path='/' element={<HomeListings />} />
+            <Route path='/host' element={<HostMain />} />
+          </Routes>
+
 
         </div>
         <Footer />

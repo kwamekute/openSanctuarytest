@@ -1,8 +1,15 @@
 import logo from '../assets/logo.png';
 import { HiMenu } from "react-icons/hi";
 import { FiSearch } from "react-icons/fi";
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 
 export default function Header() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const isHostPage = location.pathname === '/host';
+
     return (
         <>
             <div className="h-40 border-b border-gray-300 px-6 flex flex-col items-center justify-around bg-[#FBFBFB]">
@@ -17,13 +24,21 @@ export default function Header() {
 
                     {/* Right Section: Host + Menu */}
                     <div className='flex items-center space-x-5'>
-                        <button>Host a space</button>
+                        {
+                            !isHostPage ? (
+                                <button onClick={() => navigate('/host')}>Host a space</button>
+                            ) : <button onClick={() => navigate('/')}>Find a space</button>
+                        }
+
                         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
                             <HiMenu className="text-2xl text-gray-700" />
                         </div>
                     </div>
                 </div>
-                <div className='w-[70%] h-16 border border-gray-300 rounded-full mb-6 shadow-lg pl-8 pr-2 flex items-center justify-between'>
+
+
+                {/* Search Bar Section*/}
+                {/* <div className='w-[70%] h-16 border border-gray-300 rounded-full mb-6 shadow-lg pl-8 pr-2 flex items-center justify-between'>
                     <div className='flex flex-col'>
                         <label className=" text-[12px] font-medium leading-4 text-[#222222]">Where</label>
                         <input type="text" className="text-[14px] font-normal leading-[18px] text-[#222222]  focus:outline-none focus:ring-0 focus:border-none" placeholder='Search Church locations' />
@@ -53,7 +68,8 @@ export default function Header() {
                     <div className="w-[48px] h-[48px] flex items-center justify-center rounded-full bg-[#DE846A]">
                         <FiSearch className="text-2xl text-white" />
                     </div>
-                </div>
+                </div> */}
+
             </div>
         </>
     )
