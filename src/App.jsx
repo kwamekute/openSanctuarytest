@@ -1,6 +1,7 @@
 import Footer from './components/footer'
 import Header from './components/header'
 import HomeListings from './components/homepagelistings'
+import HostMain from './components/spacehost/hostmainpage'
 
 function App() {
   return (
