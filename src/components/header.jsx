@@ -5,7 +5,7 @@ import { FiSearch } from "react-icons/fi";
 export default function Header() {
     return (
         <>
-            <div className="h-40 border-b border-gray-300 px-6 flex flex-col items-center justify-around">
+            <div className="h-40 border-b border-gray-300 px-6 flex flex-col items-center justify-around bg-[#FBFBFB]">
                 <div className='w-full flex items-center justify-between'>
 
                     {/* Left Section: Logo */}
