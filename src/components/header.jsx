@@ -29,19 +29,32 @@ export default function Header() {
                                 <button onClick={() => navigate('/host')}>Host a space</button>
                             ) : <button onClick={() => navigate('/')}>Find a space</button>
                         }
+                        {
+                            isHostPage &&
+                            <>
+                                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#232323] text-white">
+                                    <p className='text-[14px] font-normal leading-[20.02px] text-white"'>K</p>
+                                </div>
+                            </>
+                        }
+
 
                         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
                             <HiMenu className="text-2xl text-gray-700" />
                         </div>
+
                     </div>
                 </div>
 
 
-                {/* Search Bar Section*/}
+                {/* Search Bar Section Appears only on home page*/}
                 {!isHostPage &&
                     <>
                         <SearchBar />
                     </>}
+
+                {/* UI items for Host page only */}
+                { }
 
 
             </div>
