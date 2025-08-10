@@ -8,18 +8,35 @@ export default function Header(Props) {
     const location = useLocation();
     const navigate = useNavigate();
     const isHostPage = location.pathname === '/host';
-    const headerHeight = isHostPage ? 'h-20' : 'h-40';
+    const isAddListingPage = location.pathname === '/host/listing/create';
+    const isHomePage = location.pathname === '/';
+    const headerHeight = isHomePage ? 'h-40' : 'h-20';
+
+    let button;
+    switch (true) {
+        case isAddListingPage:
+            button = <button onClick={() => navigate('/host')}>Save and Exit</button>;
+            break;
+        case isHostPage:
+            button = <button onClick={() => navigate('/')}>Find a space</button>;
+            break;
+        case isHomePage:
+            button = <button onClick={() => navigate('/host')}>Host a space</button>;
+    }
 
     return (
         <>
-            <div className={` ${headerHeight} border-b border-gray-300 px-6 flex flex-col items-center justify-around bg-[#FBFBFB]`}>
+            <div className={`sticky top-0 z-50 ${headerHeight} border-b border-gray-300 px-6 flex flex-col items-center justify-around bg-[#FBFBFB]`}>
                 <div className='w-full flex items-center justify-between'>
 
                     {/* Left Section: Logo */}
 
                     <div className='flex items-center space-x-2 text-[#DE846A]'>
                         <img src={logo} alt="Logo" className="h-8 w-auto" />
-                        <span>OpenSantuary</span>
+                        {
+                            isAddListingPage ? '' : <span>OpenSantuary</span>
+                        }
+
                     </div>
 
                     {/* Host tabs  */}
@@ -42,10 +59,9 @@ export default function Header(Props) {
 
                     <div className='flex items-center space-x-5'>
                         {
-                            !isHostPage ? (
-                                <button onClick={() => navigate('/host')}>Host a space</button>
-                            ) : <button onClick={() => navigate('/')}>Find a space</button>
+                            button
                         }
+
                         {
                             isHostPage &&
                             <>
@@ -55,23 +71,24 @@ export default function Header(Props) {
                             </>
                         }
 
+                        {
+                            !isAddListingPage && <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
+                                <HiMenu className="text-2xl text-gray-700" />
+                            </div>
+                        }
 
-                        <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                            <HiMenu className="text-2xl text-gray-700" />
-                        </div>
 
                     </div>
                 </div>
 
 
                 {/* Search Bar Section Appears only on home page*/}
-                {!isHostPage &&
+                {isHomePage &&
                     <>
                         <SearchBar />
                     </>}
 
                 {/* UI items for Host page only */}
-                { }
 
 
             </div >
