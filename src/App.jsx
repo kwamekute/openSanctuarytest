@@ -4,6 +4,7 @@ import Header from './components/header'
 import HomeListings from './components/homepagelistings'
 import HostMain from './components/spacehost/hostmainpage'
 import AddNewListing from './components/spacehost/addlisting'
+import SignUp from './components/authentication/signup'
 import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 
@@ -29,7 +30,7 @@ function App() {
                 tab={tab}
               />} />
             <Route path="/host/listing/create" element={<AddNewListing />} />
-
+            <Route path="/signup" element={<SignUp/>}/> 
           </Routes>
 
 

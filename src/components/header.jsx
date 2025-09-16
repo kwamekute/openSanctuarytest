@@ -21,7 +21,7 @@ export default function Header(Props) {
             button = <button onClick={() => navigate('/')}>Find a space</button>;
             break;
         case isHomePage:
-            button = <button onClick={() => navigate('/host')}>Host a space</button>;
+            button = <button onClick={() => navigate('/signup')}>Host a space</button>;
     }
 
     return (
@@ -34,7 +34,13 @@ export default function Header(Props) {
                     <div className='flex items-center space-x-2 text-[#DE846A]'>
                         <img src={logo} alt="Logo" className="h-8 w-auto" />
                         {
-                            isAddListingPage ? '' : <span>OpenSantuary</span>
+                            isAddListingPage ? '' : 
+                            <span 
+                            onClick={() => navigate('/')}
+                            style={{ cursor: 'pointer' }}
+                            >
+                                OpenSantuary
+                            </span>
                         }
 
                     </div>
