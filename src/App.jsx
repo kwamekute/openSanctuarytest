@@ -10,7 +10,7 @@ import { useState } from 'react'
 
 function App() {
   const [tab, setActiveTab] = useState('Requests');
-
+   const [user, setUser] = useState(null); // store logged-in user+org here
   const location = useLocation();
 
   const isHostListingPage = location.pathname === '/host/listing/create';
@@ -30,7 +30,7 @@ function App() {
                 tab={tab}
               />} />
             <Route path="/host/listing/create" element={<AddNewListing />} />
-            <Route path="/signup" element={<SignUp/>}/> 
+            <Route path="/signup" element={<SignUp  setUser={setUser}/> }/> 
           </Routes>
 
 
