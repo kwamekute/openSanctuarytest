@@ -1,10 +1,11 @@
-import { Routes, Route } from 'react-router-dom'
-import Footer from './components/footer'
-import Header from './components/header'
-import HomeListings from './components/homepagelistings'
-import HostMain from './components/spacehost/hostmainpage'
-import AddNewListing from './components/spacehost/addlisting'
-import SignUp from './components/authentication/signup'
+import { Routes, Route } from 'react-router-dom';
+import Footer from './components/footer';
+import Header from './components/header';
+import HomeListings from './components/homepagelistings';
+import HostMain from './components/spacehost/hostmainpage';
+import AddNewListing from './components/spacehost/addlisting';
+import SignUp from './components/authentication/signup';
+import HostProfile from './components/spacehost/hostprofile';
 import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 
@@ -21,16 +22,19 @@ function App() {
         <div className="flex-grow">
           <Header
             tab={tab}
-            SetActiveTab={setActiveTab} />
+            SetActiveTab={setActiveTab}
+            user={user} />
           <Routes>
             <Route
               path='/' element={<HomeListings />} />
             <Route
               path='/host' element={<HostMain
                 tab={tab}
+                 user={user}
               />} />
             <Route path="/host/listing/create" element={<AddNewListing />} />
             <Route path="/signup" element={<SignUp  setUser={setUser}/> }/> 
+             <Route path="/host/profile" element={<HostMain tab={tab} user={user}/> }/>
           </Routes>
 
 

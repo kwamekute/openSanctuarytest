@@ -10,6 +10,7 @@ export default function Header(Props) {
     const isHostPage = location.pathname === '/host';
     const isAddListingPage = location.pathname === '/host/listing/create';
     const isHomePage = location.pathname === '/';
+    const isHostProfilePage = location.pathname === '/host/profile';
     const headerHeight = isHomePage ? 'h-40' : 'h-20';
 
     let button;
@@ -23,6 +24,9 @@ export default function Header(Props) {
         case isHomePage:
             button = <button onClick={() => navigate('/signup')}>Host a space</button>;
     }
+
+    const orgName = Props.user?.organization?.name || '';
+  const avatarLetter = orgName ? orgName.charAt(0).toUpperCase() : '?';
 
     return (
         <>
@@ -47,7 +51,7 @@ export default function Header(Props) {
 
                     {/* Host tabs  */}
                     {
-                        isHostPage &&
+                         (isHostPage || isHostProfilePage) &&
                         <>
                             <div className="text-[14px] font-medium leading-[18px] text-gray-500 flex gap-7">
 
@@ -69,10 +73,10 @@ export default function Header(Props) {
                         }
 
                         {
-                            isHostPage &&
+                            (isHostPage || isHostProfilePage) &&
                             <>
-                                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#DE846A] text-white">
-                                    <p className='text-[14px] font-normal leading-[20.02px] text-white"'>K</p>
+                                <div onClick={() => Props.SetActiveTab('HostProfile')} className="w-10 h-10 flex items-center justify-center rounded-full bg-[#E19179] text-white cursor-pointer hover:bg-[#DE846A]">
+                                    <p className='text-[14px] font-normal leading-[20.02px] text-white"'>{avatarLetter}</p>
                                 </div>
                             </>
                         }
