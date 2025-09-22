@@ -1,3 +1,4 @@
+import {useAuth} from './context/AuthContext';
 import { Routes, Route } from 'react-router-dom';
 import Footer from './components/footer';
 import Header from './components/header';
@@ -12,7 +13,7 @@ import { useState } from 'react'
 
 function App() {
   const [tab, setActiveTab] = useState('Requests');
-   const [user, setUser] = useState(null); // store logged-in user+org here
+  const { user, setUser } = useAuth(); // store logged-in user+org here
   const location = useLocation();
 
   const isHostListingPage = location.pathname === '/host/listing/create';
