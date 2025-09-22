@@ -167,7 +167,7 @@ export default function SignUp({ setUser }) {
 
           <p className="text-center text-sm text-gray-500 mt-4">
             Already have an account?
-            <a href="/login" className="text-indigo-600 hover:underline">
+            <a onClick={() => navigate('/login')} className="text-indigo-600 hover:underline cursor-pointer">
               Log in
             </a>
           </p>

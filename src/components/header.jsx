@@ -25,7 +25,7 @@ export default function Header(Props) {
             button = <button onClick={() => navigate('/signup')}>Host a space</button>;
     }
 
-    const orgName = Props.user?.organization?.name || '';
+    const orgName = Props.user?.organization?.name || '?';
   const avatarLetter = orgName ? orgName.charAt(0).toUpperCase() : '?';
 
     return (

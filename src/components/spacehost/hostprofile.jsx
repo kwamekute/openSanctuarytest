@@ -1,6 +1,6 @@
 export default function HostProfile(Props){
 
-     const orgName = Props.user?.organization?.name || 'Test Church';
+     const orgName = Props.user?.organization?.name || '?';
      const avatarLetter = orgName ? orgName.charAt(0).toUpperCase() : '?';
     return(
         <>
@@ -18,7 +18,7 @@ export default function HostProfile(Props){
             </div>
 
             {/* vertical line */}
-            <div class="h-full w-px bg-gray-300"></div>  
+            <div className="h-full w-px bg-gray-300"></div>  
 
             {/* Right Panel */}      
             <div className="w-[65%] py-10 px-16">
