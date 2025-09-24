@@ -1,29 +1,44 @@
 import React, { useState } from "react";
 
 const steps = [
-    { id: 1, title: "Property Type" },
-    { id: 2, title: "Location" },
-    { id: 3, title: "Amenities" },
-    { id: 4, title: "Photos" },
-    { id: 5, title: "Pricing" },
-    { id: 6, title: "Publish" },
+    { id: 1, title: "Description" },
+    { id: 2, title: "City" },
+    { id: 3, title: "Province" },
+    { id: 4, title: "Amenities(comma-separated)" },
+    { id: 5, title: "Photos" },
+    { id: 6, title: "Pricing" },
+    { id: 7, title: "Publish" },
 ];
+
+// id
+// orgID
+// images
+// location
+// capacityID
+// amenities
+// Price
+
 
 export default function AddNewListing() {
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
-        propertyType: "",
-        location: "",
+        description: "",
+        city: "",
+        province: "",
         amenities: [],
         photos: [],
         price: "",
     });
+
+const [localFiles, setLocalFiles] = useState([]);
 
     const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length));
     const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
     const progress = (currentStep / steps.length) * 100;
 
+    console.log('Number of images:', localFiles.length);
+console.log('Image names:', localFiles.map(file => file.name));
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             {/* Step Container */}
@@ -35,33 +50,132 @@ export default function AddNewListing() {
 
                     {/* Example step UI */}
                     {currentStep === 1 && (
-                        <select
-                            value={formData.propertyType}
-                            onChange={(e) =>
-                                setFormData({ ...formData, propertyType: e.target.value })
-                            }
-                            className="border rounded-lg p-2 w-full"
-                        >
-                            <option value="">Select type...</option>
-                            <option value="apartment">Apartment</option>
-                            <option value="house">House</option>
-                            <option value="guesthouse">Guesthouse</option>
-                        </select>
-                    )}
-
-                    {currentStep === 2 && (
-                        <input
+                        // <select
+                        //     value={formData.propertyType}
+                        //     onChange={(e) =>
+                        //         setFormData({ ...formData, propertyType: e.target.value })
+                        //     }
+                        //     className="border rounded-lg p-2 w-full"
+                        // >
+                        //     <option value="">Select type...</option>
+                        //     <option value="apartment">Apartment</option>
+                        //     <option value="house">House</option>
+                        //     <option value="guesthouse">Guesthouse</option>
+                        // </select>
+                         <input
                             type="text"
-                            placeholder="Enter location..."
-                            value={formData.location}
+                            placeholder="Shortly Describe Your Listing(e.g. Comfortable Church Space in Toronto)..."
+                            value={formData.description}
                             onChange={(e) =>
-                                setFormData({ ...formData, location: e.target.value })
+                                setFormData({ ...formData, description: e.target.value })
                             }
                             className="border rounded-lg p-2 w-full"
                         />
                     )}
 
-                    {/* Add other steps here */}
+                    {currentStep === 2 && (
+                        <input
+                            type="text"
+                            placeholder="Enter City..."
+                            value={formData.city}
+                            onChange={(e) =>
+                                setFormData({ ...formData, city: e.target.value })
+                            }
+                            className="border rounded-lg p-2 w-full"
+                        />
+                    )}
+
+                     {currentStep === 3 && (
+                        <input
+                            type="text"
+                            placeholder="Enter Province..."
+                            value={formData.province}
+                            onChange={(e) =>
+                                setFormData({ ...formData, province: e.target.value })
+                            }
+                            className="border rounded-lg p-2 w-full"
+                        />
+                    )}
+
+                     {currentStep === 4 && (
+                        <input
+                            type="text"
+                            placeholder="Wi-Fi, Parking, Kitchen..."
+                            value={formData.province}
+                            onChange={(e) =>
+                                setFormData({ ...formData, province: e.target.value })
+                            }
+                            className="border rounded-lg p-2 w-full"
+                        />
+                    )}
+
+                {currentStep === 5 && (
+  <>
+    {/* File input */}
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      onChange={(e) => {
+        const selected = Array.from(e.target.files).slice(0, 5);
+        // combine old + new, max 5
+        const combined = [...localFiles, ...selected].slice(0, 5);
+        setLocalFiles(combined);
+        setFormData({ ...formData, photos: combined });
+      }}
+      className="border rounded-lg p-2 w-full mb-4"
+    />
+
+    {/* Previews from state, not from input */}
+    {localFiles.length > 0 && (
+      <div className="grid grid-cols-5 gap-2">
+        {localFiles.map((file, idx) => (
+          <img
+            key={idx}
+            src={URL.createObjectURL(file)}
+            alt={`preview-${idx}`}
+            className="h-20 w-20 object-cover rounded"
+          />
+        ))}
+      </div>
+    )}
+  </>
+)}
+
+
+
+                    {currentStep === 6 && (
+  <>
+    {/* Price input */}
+    <input
+      type="number"
+      placeholder="Price per hour (CAD)"
+      value={formData.price || ''}
+      onChange={(e) =>
+        setFormData({ ...formData, price: e.target.value })
+      }
+      className="border rounded-lg p-2 w-full mb-4"
+      min="0"
+      step="0.01" // allows decimals like 49.99
+    />
+
+    {/* (optional) Currency selector if you want multi-currency */}
+    {/* 
+    <select
+      value={formData.currency || 'USD'}
+      onChange={(e) =>
+        setFormData({ ...formData, currency: e.target.value })
+      }
+      className="border rounded-lg p-2 w-full mb-4"
+    >
+      <option value="USD">USD</option>
+      <option value="GHS">GHS</option>
+      <option value="EUR">EUR</option>
+    </select>
+    */}
+  </>
+)}
+
                 </div>
             </div>
 
