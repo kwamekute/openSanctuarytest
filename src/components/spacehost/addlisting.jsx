@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -17,8 +18,9 @@ const steps = [
   { id: 3, title: "Map Location" },
   { id: 4, title: "Amenities(comma-separated)" },
   { id: 5, title: "Photos" },
-  { id: 6, title: "Pricing" },
-  { id: 7, title: "Publish" },
+{ id: 6, title: "Capacity" },
+  { id: 7, title: "Pricing" },
+  { id: 8, title: "Publish" },
 ];
 
 // small child component to handle map clicks
@@ -31,15 +33,20 @@ function LocationPicker({ position, setPosition }) {
   return position ? <Marker position={position} /> : null;
 }
 
-export default function AddNewListing() {
+export default function AddNewListing(Props) {
+     const navigate = useNavigate(); 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     description: "",
     city: "",
     coordinates: null,
     amenities: [],
+    capacity:"",
     price: "",
+    orgId : Props?.user?.organization?.organization_id || null
+
   });
+  console.log(formData);
   const [localFiles, setLocalFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState([]); // track % for each file
   const [loading, setLoading] = useState(false);
@@ -51,95 +58,121 @@ export default function AddNewListing() {
   const progress = (currentStep / steps.length) * 100;
 
   const handleSubmit = async () => {
-    if (!formData.description || !formData.city || !formData.price) {
-      alert("Please fill all required fields");
-      return;
-    }
+  if (!formData.description || !formData.city || !formData.price) {
+    alert("Please fill all required fields");
+    return;
+  }
 
-    setLoading(true);
-    try {
-      // 1️⃣ Create listing (no photos yet)
-      const res = await fetch("/api/listings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          description: formData.description,
-          city: formData.city,
-          latitude: formData.coordinates ? formData.coordinates[0] : null,
-          longitude: formData.coordinates ? formData.coordinates[1] : null,
-          amenities: formData.amenities,
-          price: formData.price,
-        }),
-      });
-      if (!res.ok) throw new Error("Listing insert failed");
-      const { listing_id } = await res.json();
+  setLoading(true);
+  try {
+    // 1️⃣ Upload all images first
+    // 2️⃣ Upload images to Cloudinary, track progress
+const uploadedUrls = [];
+setUploadProgress(localFiles.map(() => 0)); // reset
 
-      // 2️⃣ Upload images to Cloudinary, track progress
-      const uploadedUrls = [];
-      setUploadProgress(localFiles.map(() => 0)); // reset
+for (let i = 0; i < localFiles.length; i++) {
+  const file = localFiles[i];
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", "open_sanctuary"); // ⚠️ replace with your unsigned preset
+  data.append("folder", `listings/`);
 
-      for (let i = 0; i < localFiles.length; i++) {
-        const file = localFiles[i];
-        const data = new FormData();
-        data.append("file", file);
-        data.append("upload_preset", "YOUR_PRESET"); // your Cloudinary unsigned preset
-        data.append("folder", `listings/${listing_id}`);
+  const xhr = new XMLHttpRequest();
 
-        // Use XMLHttpRequest to track progress
-        const xhr = new XMLHttpRequest();
-        const promise = new Promise((resolve, reject) => {
-          xhr.open("POST", "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload");
-          xhr.upload.addEventListener("progress", (e) => {
-            if (e.lengthComputable) {
-              const percent = Math.round((e.loaded / e.total) * 100);
-              setUploadProgress((prev) => {
-                const updated = [...prev];
-                updated[i] = percent;
-                return updated;
-              });
-            }
-          });
-          xhr.onload = () => {
-            if (xhr.status === 200) {
-              const response = JSON.parse(xhr.responseText);
-              resolve(response.secure_url);
-            } else reject(xhr.statusText);
-          };
-          xhr.onerror = () => reject(xhr.statusText);
-          xhr.send(data);
+  const promise = new Promise((resolve, reject) => {
+    xhr.open("POST", "https://api.cloudinary.com/v1_1/dvmtodnht/image/upload");
+
+    // Track upload progress
+    xhr.upload.addEventListener("progress", (e) => {
+      if (e.lengthComputable) {
+        const percent = Math.round((e.loaded / e.total) * 100);
+        setUploadProgress((prev) => {
+          const updated = [...prev];
+          updated[i] = percent;
+          return updated;
         });
-
-        const url = await promise;
-        uploadedUrls.push(url);
       }
+    });
 
-      // 3️⃣ Send Cloudinary URLs to backend
-      const res2 = await fetch(`/api/listings/${listing_id}/photos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ photos: uploadedUrls }),
-      });
-      if (!res2.ok) throw new Error("Saving photos failed");
+    // Handle success/error
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        resolve(response.secure_url);
+      } else {
+        try {
+          const errorResponse = JSON.parse(xhr.responseText);
+          console.error("Cloudinary upload error:", errorResponse);
+          reject(errorResponse);
+        } catch (e) {
+          console.error(
+            "Cloudinary upload failed:",
+            xhr.status,
+            xhr.responseText
+          );
+          reject(xhr.statusText);
+        }
+      }
+    };
 
-      alert("Listing created successfully!");
-      // reset
-      setFormData({
-        description: "",
-        city: "",
-        coordinates: null,
-        amenities: [],
-        price: "",
-      });
-      setLocalFiles([]);
-      setUploadProgress([]);
-      setCurrentStep(1);
-    } catch (err) {
-      console.error(err);
-      alert("Error creating listing");
-    } finally {
-      setLoading(false);
-    }
-  };
+    xhr.onerror = () => {
+      console.error("Network error during Cloudinary upload:", xhr.statusText);
+      reject(xhr.statusText);
+    };
+
+    xhr.send(data);
+  });
+
+  const url = await promise;
+  uploadedUrls.push(url);
+}
+
+
+    // 2️⃣ Only after uploads succeed, call backend once
+    const res = await fetch("http://localhost:3000/listing", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        description: formData.description,
+        city: formData.city,
+        latitude: formData.coordinates ? formData.coordinates[0] : null,
+        longitude: formData.coordinates ? formData.coordinates[1] : null,
+        amenities: formData.amenities,
+        price: formData.price,
+        photos: uploadedUrls, // send with listing
+        orgId: formData.orgId,
+        capacity: formData.capacity
+      }),
+    });
+
+    if (!res.ok) throw new Error("Listing insert failed");
+    const result = await res.json();
+
+    alert("Listing created successfully!");
+
+    Props.setActiveTab('Listings');
+     navigate("/host");
+    // reset
+    // setFormData({
+    //   description: "",
+    //   city: "",
+    //   coordinates: null,
+    //   amenities: [],
+    //   price: "",
+    // });
+    // setLocalFiles([]);
+    // setUploadProgress([]);
+    // setCurrentStep(1);
+
+
+
+  } catch (err) {
+    console.error(err);
+    alert("Error creating listing");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -258,8 +291,23 @@ export default function AddNewListing() {
             </>
           )}
 
+           {currentStep === 6 && (
+            <input
+              type="number"
+              placeholder="e.g: '50'"
+              value={formData.capacity || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, capacity: e.target.value })
+              }
+              className="border rounded-lg p-2 w-full mb-4"
+              min="0"
+              step="0.01"
+            />
+          )}
+
+
           {/* Step 6: Pricing */}
-          {currentStep === 6 && (
+          {currentStep === 7 && (
             <input
               type="number"
               placeholder="Price per hour (CAD)"
@@ -274,7 +322,7 @@ export default function AddNewListing() {
           )}
 
           {/* Step 7: Publish */}
-          {currentStep === 7 && (
+          {currentStep === 8 && (
             <div>
               <p className="mb-4">
                 Click Finish to publish your listing. Photos will upload next.

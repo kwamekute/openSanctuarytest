@@ -2,6 +2,7 @@ export default function HostProfile(Props){
 
      const orgName = Props.user?.organization?.name || '?';
      const avatarLetter = orgName ? orgName.charAt(0).toUpperCase() : '?';
+     const orgId = Props.user.organization.organization_id;
     return(
         <>
         <div className="flex h-screen">
@@ -29,6 +30,7 @@ export default function HostProfile(Props){
                     </div>
                     <h1 className="text-gray-900">{orgName}</h1>
                     <p>Organisation/Host</p>
+                    <p>{orgId}</p>
                 </div>
             </div>
     </div>

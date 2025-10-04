@@ -25,16 +25,10 @@ export default function HomeListings() {
                     <div className="h-[200px] w-[200px] border-red rounded-[5%]">
                                 <img src={imageURL} alt="property" className="h-auto w-auto rounded-[5%]" />
                                 <p className="text-[14px] font-bold leading-[20.02px] text-[#222222]">
-                                    Toronto
+                                    Conference Space in Toronto
                                 </p>
                                 <p className="text-[14px] font-normal leading-[20.02px] text-[#222222]">
-                                    West-Wing Spaces
-                                </p>
-                                <p className="text-[14px] font-normal leading-[20.02px] text-[#222222]">
-                                    100 guests
-                                </p>
-                                <p className="text-[14px] font-normal leading-[20.02px] text-[#222222]">
-                                    $20/hr
+                                    $20/hr 
                                 </p>
                             </div>
                     {/* {[...Array(6)].map((_, i) => (

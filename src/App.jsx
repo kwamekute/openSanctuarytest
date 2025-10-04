@@ -34,7 +34,7 @@ function App() {
                 tab={tab}
                  user={user}
               />} />
-            <Route path="/host/listing/create" element={<AddNewListing />} />
+            <Route path="/host/listing/create" element={<AddNewListing setActiveTab={setActiveTab} user={user}/>} />
             <Route path="/signup" element={<SignUp  setUser={setUser}/> }/> 
             <Route path="/login" element ={<LogIn setUser={setUser}/>}/>
              <Route path="/host/profile" element={<HostMain tab={tab} user={user}/> }/>
