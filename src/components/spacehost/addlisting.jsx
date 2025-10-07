@@ -34,7 +34,7 @@ function LocationPicker({ position, setPosition }) {
 }
 
 export default function AddNewListing(Props) {
-     const navigate = useNavigate(); 
+     const navigate = useNavigate();   
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     description: "",

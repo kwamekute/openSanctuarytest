@@ -13,6 +13,14 @@ export default function Header(Props) {
     const isHostProfilePage = location.pathname === '/host/profile';
     const headerHeight = isHomePage ? 'h-40' : 'h-20';
 
+     const handleHostClick = () => {
+    if (Props.user && Props.user.account) {
+      navigate('/host');
+    } else {
+      navigate('/signin');
+    }
+  };
+
     let button;
     switch (true) {
         case isAddListingPage:
@@ -22,7 +30,7 @@ export default function Header(Props) {
             button = <button onClick={() => navigate('/')}>Find a space</button>;
             break;
         case isHomePage:
-            button = <button onClick={() => navigate('/signup')}>Host a space</button>;
+            button = <button onClick={handleHostClick}>Host a space</button>;
     }
 
     const orgName = Props.user?.organization?.name || '?';
