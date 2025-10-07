@@ -6,6 +6,7 @@ import HomeListings from './components/homepagelistings';
 import HostMain from './components/spacehost/hostmainpage';
 import AddNewListing from './components/spacehost/addlisting';
 import ListingDetails from './components/listingdetails';
+import FilteredListings from './components/filteredlistings';
 import SignUp from './components/authentication/signup';
 import LogIn from './components/authentication/login';
 import HostProfile from './components/spacehost/hostprofile';
@@ -37,6 +38,7 @@ function App() {
               />} />
             <Route path="/host/listing/create" element={<AddNewListing setActiveTab={setActiveTab} user={user}/>} />
             <Route path="/host/listing/:id" element={<ListingDetails />} />
+            <Route path="/host/filtered" element={<FilteredListings />} />
             <Route path="/signup" element={<SignUp  setUser={setUser}/> }/> 
             <Route path="/login" element ={<LogIn setUser={setUser}/>}/>
              <Route path="/host/profile" element={<HostMain tab={tab} user={user}/> }/>

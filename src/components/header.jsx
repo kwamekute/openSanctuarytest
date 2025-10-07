@@ -13,13 +13,18 @@ export default function Header(Props) {
     const isHostProfilePage = location.pathname === '/host/profile';
     const headerHeight = isHomePage ? 'h-40' : 'h-20';
 
-     const handleHostClick = () => {
-    if (Props.user && Props.user.account) {
-      navigate('/host');
-    } else {
-      navigate('/signin');
-    }
-  };
+    const user = Props.user || null;
+
+// ✅ Prevent crash by logging safely
+console.log("User in Header:", user ? user.account_id : "no user yet");
+
+const handleHostClick = () => {
+  if (user && user.account_id) {
+    navigate('/host');
+  } else {
+    navigate('/login');
+  }
+};
 
     let button;
     switch (true) {
