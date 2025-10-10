@@ -1,5 +1,5 @@
 import {useAuth} from './context/AuthContext';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Footer from './components/footer';
 import Header from './components/header';
 import HomeListings from './components/homepagelistings';
@@ -17,14 +17,36 @@ function App() {
   const [tab, setActiveTab] = useState('Requests');
   const { user, setUser } = useAuth(); // store logged-in user+org here
   const location = useLocation();
-
+  const navigate = useNavigate();
   const isHostListingPage = location.pathname === '/host/listing/create';
+
+   const handleLogout = async () => {
+    try {
+      // ✅ Call backend logout route (to clear session)
+      const res = await fetch("http://localhost:3000/signin/logout", {
+        method: "POST",
+        credentials: "include", // important if using cookies/session
+      });
+
+      if (res.ok) {
+        // Optional: clear local user state
+        setUser(null);
+        navigate("/"); // redirect to login page
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (err) {
+      console.error("Error during logout:", err);
+    }
+  };
+
 
   return (
     <>
       <div className="min-h-screen flex flex-col">
         <div className="flex-grow">
           <Header
+          handleLogout={handleLogout}
             tab={tab}
             SetActiveTab={setActiveTab}
             user={user} />
