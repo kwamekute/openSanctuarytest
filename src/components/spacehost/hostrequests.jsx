@@ -6,7 +6,7 @@ export default function HostRequests() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/request", { credentials: "include" }) // include cookies for session
+    fetch("http://localhost:3000/request", { credentials: "include" }) 
       .then((res) => res.json())
       .then((data) => {
         if (data.success) setRequests(data.requests);

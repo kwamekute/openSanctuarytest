@@ -65,8 +65,8 @@ export default function AddNewListing(Props) {
 
   setLoading(true);
   try {
-    // 1️⃣ Upload all images first
-    // 2️⃣ Upload images to Cloudinary, track progress
+    // 1. Upload all images first
+    // 2. Upload images to Cloudinary, track progress
 const uploadedUrls = [];
 setUploadProgress(localFiles.map(() => 0)); // reset
 
@@ -74,7 +74,7 @@ for (let i = 0; i < localFiles.length; i++) {
   const file = localFiles[i];
   const data = new FormData();
   data.append("file", file);
-  data.append("upload_preset", "open_sanctuary"); // ⚠️ replace with your unsigned preset
+  data.append("upload_preset", "open_sanctuary"); 
   data.append("folder", `listings/`);
 
   const xhr = new XMLHttpRequest();
@@ -128,7 +128,7 @@ for (let i = 0; i < localFiles.length; i++) {
 }
 
 
-    // 2️⃣ Only after uploads succeed, call backend once
+    // Only after uploads succeed, call backend once
     const res = await fetch("http://localhost:3000/listing", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -152,18 +152,6 @@ for (let i = 0; i < localFiles.length; i++) {
 
     Props.setActiveTab('Listings');
      navigate("/host");
-    // reset
-    // setFormData({
-    //   description: "",
-    //   city: "",
-    //   coordinates: null,
-    //   amenities: [],
-    //   price: "",
-    // });
-    // setLocalFiles([]);
-    // setUploadProgress([]);
-    // setCurrentStep(1);
-
 
 
   } catch (err) {

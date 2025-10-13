@@ -20,9 +20,9 @@ function App() {
   const navigate = useNavigate();
   const isHostListingPage = location.pathname === '/host/listing/create';
 
-   const handleLogout = async () => {
+  const handleLogout = async () => {
     try {
-      // ✅ Call backend logout route (to clear session)
+      // Call backend logout route (to clear session)
       const res = await fetch("http://localhost:3000/signin/logout", {
         method: "POST",
         credentials: "include", // important if using cookies/session
@@ -51,13 +51,8 @@ function App() {
             SetActiveTab={setActiveTab}
             user={user} />
           <Routes>
-            <Route
-              path='/' element={<HomeListings />} />
-            <Route
-              path='/host' element={<HostMain
-                tab={tab}
-                 user={user}
-              />} />
+            <Route path='/' element={<HomeListings />} />
+            <Route path='/host' element={<HostMain tab={tab} user={user}/>} />
             <Route path="/host/listing/create" element={<AddNewListing setActiveTab={setActiveTab} user={user}/>} />
             <Route path="/host/listing/:id" element={<ListingDetails />} />
             <Route path="/host/filtered" element={<FilteredListings />} />
@@ -65,11 +60,8 @@ function App() {
             <Route path="/login" element ={<LogIn setUser={setUser}/>}/>
              <Route path="/host/profile" element={<HostMain tab={tab} user={user}/> }/>
           </Routes>
-
-
         </div>
         {!isHostListingPage && <Footer />}
-
       </div>
 
     </>

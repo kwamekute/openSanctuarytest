@@ -8,28 +8,28 @@ export default function HostListings() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Replace this with the actual logged-in orgId (from context, cookie, or auth)
+ 
 
   useEffect(() => {
   const fetchListings = async () => {
     try {
       const res = await fetch(`http://localhost:3000/listing/org`, {
-        credentials: "include", // <-- important if you're using sessions
+        credentials: "include", 
       });
 
       if (!res.ok) {
         console.error("Failed to fetch listings:", res.status);
-        setListings([]); // fallback
+        setListings([]); 
         return;
       }
 
       const data = await res.json();
 
-      // ✅ Ensure the result is an array before setting
+      // Ensure the result is an array before setting
       if (Array.isArray(data)) {
         setListings(data);
       } else if (Array.isArray(data.listings)) {
-        setListings(data.listings); // in case backend wraps it in an object
+        setListings(data.listings);
       } else {
         setListings([]);
       }
@@ -50,7 +50,7 @@ export default function HostListings() {
 
   return (
     <div className="min-h-screen w-full">
-      {/* 🔹 Header */}
+      {/* Header */}
       <div className="flex justify-between items-center w-full h-20 py-5 px-16">
         <h1 className="text-xl font-semibold">Your Listings</h1>
         <div
@@ -61,7 +61,7 @@ export default function HostListings() {
         </div>
       </div>
 
-      {/* 🔹 No Listings */}
+      {/*  No Listings */}
       {listings.length === 0 ? (
         <div className="w-full flex flex-col items-center justify-center gap-4 mt-12">
           <img src={property} alt="property" className="h-[200px] rounded-[5%]" />
@@ -76,7 +76,7 @@ export default function HostListings() {
           </button>
         </div>
       ) : (
-        /* 🔹 Existing Listings Grid */
+        /* Existing Listings Grid */
         <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {listings.map((listing) => {
             const images =
@@ -117,30 +117,3 @@ export default function HostListings() {
     </div>
   );
 }
-
-// import { FaPlus } from "react-icons/fa6";
-// import property from '../../assets/property.png'
-// import { useNavigate } from "react-router-dom";
-
-
-// export default function HostListings() {
-
-//     const navigate = useNavigate();
-//     return (
-//         <>
-//             <div className="flex justify-between w-full h-20 py-5 px-16">
-//                 <h1>Your Listings</h1>
-//                 <div onClick={() => navigate('/host/listing/create')} className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors">
-//                     <FaPlus className="text-md text-gray-700 " />
-//                 </div>
-//             </div>
-//             <div className=" w-full flex flex-col items-center justify-center gap-4">
-//                 <img src={property} alt="property" className="h-[200px] rounded-[5%] py-12" />
-//                 <p className="text-[16px] font-normal leading-[20px] text-[#222222] font-sans">
-//                     list your space on OpenSanctuary to start receiving reservation requests.
-//                 </p>
-//                 <button onClick={() => navigate('/host/listing/create')} className="bg-gray-200 hover:bg-gray-300">Create Listing</button>
-//             </div>
-//         </>
-//     )
-// }

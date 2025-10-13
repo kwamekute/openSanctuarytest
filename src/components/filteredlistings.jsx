@@ -12,7 +12,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-// 💰 Custom marker showing price
+// Custom marker showing price
 const createPriceIcon = (price) =>
   L.divIcon({
     className:
@@ -22,7 +22,7 @@ const createPriceIcon = (price) =>
     iconAnchor: [20, 10],
   });
 
-// 📍 Fit map to listings
+// Fit map to listings
 function FitMapToBounds({ listings }) {
   const map = useMap();
 
